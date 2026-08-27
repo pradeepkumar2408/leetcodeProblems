@@ -8,6 +8,6 @@ class Solution {
             else
                 high = mid;
         }
-        return low;
+        return high;
     }
 }
