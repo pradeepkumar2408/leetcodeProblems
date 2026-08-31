@@ -1,18 +1,16 @@
 class Solution {
-    void find(int index, List<Integer> ans, List<List<Integer>> res, int[] nums){
-        if(index == nums.length){
-            res.add(new ArrayList<>(ans));
-            return;
-        }
-        ans.add(nums[index]);
-        find(index + 1, ans,res,nums);
-        ans.remove(ans.size() - 1);
-        find(index + 1, ans, res, nums);
-    }
     public List<List<Integer>> subsets(int[] nums) {
+        int n = (int)(Math.pow(2,nums.length));
         List<List<Integer>> res = new ArrayList<>();
-        List<Integer> ans = new ArrayList<>();
-        find(0,ans,res,nums);
+        for(int i = 0 ; i < n; i++){
+            ArrayList<Integer> ans = new ArrayList<>();
+            for(int k = 0; k < nums.length; k++){
+                if((i & (1 << k)) != 0){
+                    ans.add(nums[k]);
+                }
+            }
+            res.add(ans);
+        }
         return res;
     }
 }
