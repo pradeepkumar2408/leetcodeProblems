@@ -1,0 +1,25 @@
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int n = nums.length;
+        long sum = 0;
+        for(int i = 0 ; i< n ; i++)
+            sum +=nums[i];
+         if(sum % 2 != 0)
+            return false;
+        int m = (int)sum / 2;
+        boolean[][] dp = new boolean[n+1][m+1];
+          for(int i = 0; i <= n ;i++){
+            dp[i][0] = true;
+        }
+        for(int i = 1; i <= n ; i++){
+            for(int j = 0; j <= m ; j++){
+                if(j - nums[i-1] >= 0){
+                dp[i][j] |= (dp[i-1][j] || dp[i-1][j-nums[i-1]]);
+                }else{
+                    dp[i][j] = dp[i-1][j];
+                }
+            }
+        }
+        return dp[n][m];
+    }
+}
