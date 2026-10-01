@@ -1,18 +1,23 @@
 class Solution {
+    int dpCalculate(int i, int[] coins, int amount, int[][] dp){
+        if(i >= coins.length || amount < 0)
+            return (int)1e9;
+        if(amount == 0)
+            return 0;
+        
+        if(dp[i][amount] != -1)
+            return dp[i][amount];
+        int cnt = (int)1e9;
+        cnt = Math.min(cnt, 1 + dpCalculate(i, coins, amount - coins[i], dp));
+        cnt = Math.min(cnt, dpCalculate(i + 1, coins, amount, dp));
+        return dp[i][amount] = cnt;
+    }
     public int coinChange(int[] coins, int amount) {
-        int n = coins.length, m = amount;
-        int[][] dp = new int[n + 1][m + 1];
-        for (int j = 1; j <= m; j++)
-            dp[0][j] = Integer.MAX_VALUE - 1;
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= m; j++) {
-                if (j - coins[i-1] >= 0) {
-                    dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - coins[i - 1]] + 1);
-                } else {
-                    dp[i][j] = dp[i - 1][j];
-                }
-            }
-        }
-        return dp[n][m] == Integer.MAX_VALUE-1 ? -1 : dp[n][m];
+        int m = coins.length;
+        int[][] dp = new int[m][amount + 1];
+        for(int i = 0; i < m; i++)
+            Arrays.fill(dp[i], -1);
+        int res = dpCalculate(0, coins, amount, dp);
+        return res == (int)1e9 ? -1 :res;
     }
 }
