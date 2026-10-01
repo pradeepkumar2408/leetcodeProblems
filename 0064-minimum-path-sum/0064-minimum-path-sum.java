@@ -1,20 +1,21 @@
 class Solution {
+    int dpCalculate(int m, int n,int[][] grid, int[][] dp){
+        if(m < 0 || n < 0)
+            return (int)1e7;
+        if(m == 0 && n == 0)
+            return grid[0][0];
+        if(dp[m][n] != -1)
+            return dp[m][n];
+        int ans = (int)1e7;
+        ans = Math.min(ans, grid[m][n] + dpCalculate(m - 1, n, grid, dp));
+        ans = Math.min(ans, grid[m][n] + dpCalculate(m, n - 1, grid, dp));
+        return dp[m][n] = ans;
+    }
     public int minPathSum(int[][] grid) {
-        int n = grid.length, m = grid[0].length;
-        int[][] dp = new int[n][m];
-        dp[0][0] = grid[0][0];
-        for (int i = 1; i < m; i++) {
-            dp[0][i] = dp[0][i - 1] + grid[0][i];
-        }
-        for (int i = 1; i < n; i++) {
-            dp[i][0] = dp[i - 1][0] + grid[i][0];
-        }
-
-        for (int i = 1; i < n; i++) {
-            for (int j = 1; j < m; j++) {
-                dp[i][j] = Math.min(dp[i - 1][j] + grid[i][j], dp[i][j - 1] + grid[i][j]);
-            }
-        }
-        return dp[n - 1][m - 1];
+        int m = grid.length, n = grid[0].length;
+        int[][] dp = new int[m][n];
+        for(int i = 0; i < m; i++)
+            Arrays.fill(dp[i], -1);
+        return dpCalculate(m - 1, n - 1, grid, dp);
     }
 }
